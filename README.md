@@ -8,19 +8,17 @@ Correlated Random Walk (CRW)
 
 ## Purpose
 
-CRW is often used to represent the movement of animal individuals, in two-dimensional space. It is characterized by the fact that the direction of movement at any time step is correlated with the direction of movement at the previous time step. 
+The goal of CRW is to represent the movement of animal individuals, in two-dimensional space. When modeled a correlated random walk, the direction of movement at any time step is correlated with the direction of movement at the previous time step. 
 
 CRW was originally developed for describing the movement of insects (e.g. Kareiva & Schigesada 1983, Turchin 1998) and fitted to observational movement data. It has been shown that CRW describes well the movement behaviour not only of insects (e.g. Schtickzelle et al. 2007, Schultz and Crone 2001) but also other animals, e.g. sea stars (Lohmann et al. 2016), caribou (Bergmann et al. 2000), and grey seals (Austin et al. 2004). Accordingly, CRW is often used to represent animal movement in agent-based models (e.g. butterflies: Schultz and Crone 2005, Radchuk et al. 2013, wild boars: Scherer et al. 2020).
 
 ## Narrative Documentation
 
-_TO BE DONE, not exactly clear to me what goes in here_   
-A detailed narrative description of this RBB describing, i.e., its entities, processes, parameters, and scales according
-to the rationale of the "Overview" part of the [ODD Protocol](https://www.jasss.org/23/2/7/S1-ODD.pdf). 
+The entities that call CRW are individual animals.   
+Each individual possesses two state variables: move length and turning angle. These state variables are updated at each time step.   
+At each time step the RBB calculates the turning angle of the individual (that correlates with the previous heading of the individual) and its move length. The RBB then uses these values to update the location of the individual to the new one.   
+The processes in the model are scheduled as follows: first the turning angle is calculated using a specific distribution, and next the move length is calculated, so that the new x and y coordinates can be calculated, to which the individual moves.  
 
-A visual representation of the RBB should also be strongly considered to be included, e.g., a
-[flowchart](https://en.wikipedia.org/wiki/Flowchart) and/or pseudocode that demonstrates the essential mechanism(s) of
-the RBB.
 
 ## Reference Implementation and Use Cases
 
@@ -37,13 +35,9 @@ Durable references (i.e., permanent identifiers or URLs) to other related RBBs.
 
 # Tier 2
 
-Tier 2 RBBs require documentation of the RBB in the spirit of the ODD protocol for describing ABMs. After reading Tier 2 RBB documentation a human should be capable of re-implementing the RBB themselves and completely understand what the RBB is doing and how. 
-
-Tier 2 RBBs should meet all Tier 1 requirements with the following additions as well as more detailed descriptions of a few of the Tier 1 fields.
-
 ## Keywords
 
-movement, animals, local movement
+movement, animals, local movement, foraging
 
 ## General Metadata
 
@@ -60,43 +54,58 @@ movement, animals, local movement
 
 ## Software Citation and FAIR4RS Principles
 
+Viktoriia Radchuk, Thibault Fronville, Uta Berger (202X) ‘Correlated random walk (CRW) to model individual movement in homogeneous landscapes’   
+__to be updated__
+
 Create a citation for this RBB according to the 
 [Software Citation Principles](https://force11.org/info/software-citation-principles-published-2016/). 
 
-This can be easily adopted by editing the 
-[CITATION.cff file](https://docs.github.com/en/repositories/managing-your-repositorys-settings-and-features/customizing-your-repository/about-citation-files)
-within this repository after
-[publishing this RBB in Zenodo](https://docs.github.com/en/repositories/archiving-a-github-repository/referencing-and-citing-content). 
-
-Then, edit this section and indicate how you'd like for this RBB to be cited, e.g.,
-
-> Druskat, S., Spaaks, J. H., Chue Hong, N., Haines, R., Baker, J., Bliven, S., Willighagen, E., Pérez-Suárez, D., & Konovalov, A. (2021). Citation File Format (Version 1.2.0) [Computer software]. https://doi.org/10.5281/zenodo.5171937
-
-Be sure to update the citation manually if you go this route and the citation changes.
-
 ## Concepts
 
-Describe the theoretical concepts the RBB is building on, e.g., a specific standard description of a certain behavior
-such as _symmetric competition_ or the _informed user_. This helps to classify the building block and to develop links
-to other similar RBBs.
+The key concept that CRW is based on is that of movement. Movement is defined as a change in the spatial location of an individual over time and is a key behavioural process that shapes ecological and evolutionary processes of nearly all animals (Nathan 2008). By affecting spatial position of individuals, movement shapes spatial patterns of individuals within populations and thereby affects metapopulation dynamics (Hanski 1998), species distribution (Hodgson et al. 2022) and, more generally, biodiversity dynamics (Jeltsch et al. 2013).   
+Different types of movements can be differentiated (Schlaegel et al. 2020) and CRW is useful for describing movement on local temporal and spatial scales.    
 
 ## Documentation and Use
 
-RBBs are typically relatively short procedures that describe a certain process or interaction. They typically affect a
-certain entity, e.g. an agent or a spatial unit, and they are typically run by a certain calling agent, or agents. For
-example, a plant uses water, or competes with other plants, a buyer buys somthings, or a farmer is affecting the way how
-other farmers use their land. Note that the calling and affecting agents can be the same.
-
 ### Entity
-
+ __now I am confused: this was already part of Tier 1, section 'Narrative documentation' (as part of Overview in the ODD). Do we really need to repeat it here?__
+ 
 - What entity, or entities, are running the submodel? What state variables does the entity need to have to run this RBB?
 - Which variables describe the entities (normally derived from state variables) 
 
 ### Context, model parameters & patterns:
 
--   What global variables (e.g., parameters characterizing the environment) or data structures (e.g., a gridded spatial environment) does the use of the RBB require?
--   Does the RBB directly affect global variables or data structures?
--   Which parameters does the RBB use? Preferably a table including parameter name, meaning, default value, range, and unit (if applicable)
+-   What global variables (e.g., parameters characterizing the environment) or data structures (e.g., a gridded spatial environment) does the use of the RBB require?   
+The environment has to have x and y coordinates so that the location of an individual at the next step can be calculated based on the chosen turning angle and the particular move length. Although quite many CRW models were implemented in a gridded spatial environment, a grid is not a prerequisite for modelling movement as CRW, but the usage of continuous coordinates is also possible.   
+
+-   Does the RBB directly affect global variables or data structures?   
+Global variables are not modified by individuals’ movement, only the state variables (i.e. x and y coordinates) of the individual are affected.     
+
+-   Which parameters does the RBB use? Preferably a table including parameter name, meaning, default value, range, and unit (if applicable)    
+Move length is typically chosen from lognormal distribution, so that parameters defining this distribution are needed.    
+
+| name | meaning | units | typical ranges | 
+| -------- | -------- | -------- | -------- | 
+| mu     | Mean of the lognormal distribution, from which the move length is drawn | meters | (-$\infty$, $\infty$)|
+| sd     | Standard deviation of the lognormal distribution, from which the move length is drawn | meters |  (0, $\infty$)|
+
+Turning angle are drawn from appropriate distributions. We present here two ways to model turning angles:
+- implementation #1: chosen from uniform distribution    
+This is a rather simple and very often used implementation for choosing the turning angle. The angle is drawn from a uniform distribution within a specified range of possible headings (e.g. between -30 and +30 degrees).
+- implementation #2: drawn from a von Mises distribution   
+A common but more sophisticated solution is the drawing of the turning angle from one kind of a circular distribution, e.g., from a von Mises distribution, wrapped Cauchy distribution, or wrapped normal distribution (Codling et al. 2008). Our second implementation example uses a von Mises distribution. The description of this distribution also requires two parameters namely a mean (m) and a concentration (K).
+
+__Parameters for turning angles according to implementation #1__
+| name | meaning | units | typical ranges | 
+| -------- | -------- | -------- | -------- | 
+| angle     | +/- values of turn | radians | [0, 2$\times$$\pi$] |
+
+
+__Parameters for turning angles according to implementation #2__
+| name | meaning | units | typical ranges | 
+| -------- | -------- | -------- | -------- | 
+| m     | Mean of the von Mises distribution, from which the turning angle is drawn | radians |  [0, 2$\times$$\pi$] |
+| K     | Concentration parameter of the von Mises distribution, used for drawing the turning angles | unitless  | (0, $\infty$) |
 
 ### Patterns and data to determine global variables & parameters and/or to claim that the model is realistic enough for its purpose
 
