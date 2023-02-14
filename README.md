@@ -1,34 +1,18 @@
 # Reusable Building Blocks
 
-This is a template repository for the Reusable Building Blocks (RBB) Initiative. (TODO: insert reference to RBB position
-paper or living document). 
+# Tier 1
 
-> RBBs are submodels that describe processes relevant for a broad range of ABMs in a certain application domain, for
-> example plant competition in vegetation models or reinforcement learning in a behavioral model.
-
-This is still a work in progress, and we are grateful for any comment or suggestions about
-the following two-tier structure for RBBs. *Tier 1 requirements* are intended to set an initial low bar for
-submission and sharing so that good ideas can be shared and improved upon. *Tier 2 requirements* establish a rigorous,
-tested baseline for RBBs that can be peer reviewed and published in a trusted digital repository with a DOI similar to a
-journal submission.
-
-
-# Tier 1 Requirements
-
-## Name
-
-The RBB's name should be self-explanatory and short.
+## Correlated Random Walk (CRW)
 
 ## Purpose
 
-A narrative description that addresses the following:
+CRW is often used to represent the movement of animal individuals, in two-dimensional space. It is characterized by the fact that the direction of movement at any time step is correlated with the direction of movement at the previous time step. 
 
-1. What mechanism or process does this RBB represent?
-2. What kinds of environments, systems, and research questions has this RBB been used for, or could it be relevant for? 
-   Include durable references (e.g., DOIs, permanent URLs, or other permanent identifiers) to past work.
+CRW was originally developed for describing the movement of insects (e.g. Kareiva & Schigesada 1983, Turchin 1998) and fitted to observational movement data. It has been shown that CRW describes well the movement behaviour not only of insects (e.g. Schtickzelle et al. 2007, Schultz and Crone 2001) but also other animals, e.g. sea stars (Lohmann et al. 2016), caribou (Bergmann et al. 2000), and grey seals (Austin et al. 2004). Accordingly, CRW is often used to represent animal movement in agent-based models (e.g. butterflies: Schultz and Crone 2005, Radchuk et al. 2013, wild boars: Scherer et al. 2020).
 
 ## Narrative Documentation
 
+_TO BE DONE, not exactly clear to me what goes in here_
 A detailed narrative description of this RBB describing, i.e., its entities, processes, parameters, and scales according
 to the rationale of the "Overview" part of the [ODD Protocol](https://www.jasss.org/23/2/7/S1-ODD.pdf). 
 
@@ -38,18 +22,12 @@ the RBB.
 
 ## Reference Implementation and Use Cases
 
-An implementation of the RBB in a specific programming language and/or software framework provided in a readily
-executable format (e.g., source code that can be easily compiled into an executable)
-
-- well commented
-- clear metadata that describes what programming language, version, operating system, and framework(s) used
-- the executable demonstration program that shows how the RBB works and allows users to interact with its inputs and
-  parameters
+This RBB includes an implementation of CRW in NetLogo version 6.2.2 run on MacOS Monterey 12.2.1
 
 ## Inputs and Outputs
 
-A comprehensive list of all inputs and outputs of the RBB, i.e., all variables it needs as the basis for its
-calculations, and all variables it changes as a result.
+- Inputs: The RBB requires the current x and y coordinates of the calling entity, and the values of the parameters describing the distributions from which the turning angle and the move length will be drawn.
+- Outputs: The RBB produces the coordinates (x and y) of the next location to which the entity will be moving.
 
 ## Relationship to other RBBs
 
