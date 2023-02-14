@@ -2,7 +2,9 @@
 
 # Tier 1
 
-## Correlated Random Walk (CRW)
+## Name
+
+Correlated Random Walk (CRW)
 
 ## Purpose
 
@@ -12,7 +14,7 @@ CRW was originally developed for describing the movement of insects (e.g. Kareiv
 
 ## Narrative Documentation
 
-_TO BE DONE, not exactly clear to me what goes in here_
+_TO BE DONE, not exactly clear to me what goes in here_   
 A detailed narrative description of this RBB describing, i.e., its entities, processes, parameters, and scales according
 to the rationale of the "Overview" part of the [ODD Protocol](https://www.jasss.org/23/2/7/S1-ODD.pdf). 
 
@@ -41,20 +43,20 @@ Tier 2 RBBs should meet all Tier 1 requirements with the following additions as 
 
 ## Keywords
 
-relevant keywords or tags for this RBB
+movement, animals, local movement
 
 ## General Metadata
 
-- authors
-- version
+- authors: Viktoriia Radchuk, Thibault Fronville, Uta Berger
+- version:  v 1.0.0 _Okay?_
 - license
-- programming language and version
-- software, system, and data dependencies
+- programming language and version: NetLogo version 6.2.2
+- software, system, and data dependencies: 
 - repository URL (NOTE: needs clarification, is this the _development_ repository like the URL of this GitHub repository, or a TRUSTed digital repository for
   archival, like https://doi.org/10.5281/zenodo.7241586?)
-- peer reviewed (yes/no)
-- date published
-- date last updated
+- peer reviewed (yes/no): __Don't know what to fill in, reviewed by whom?__
+- date published: 
+- date last update: 
 
 ## Software Citation and FAIR4RS Principles
 
