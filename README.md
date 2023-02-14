@@ -76,12 +76,15 @@ Different types of movements can be differentiated (Schlaegel et al. 2020) and C
 ### Context, model parameters & patterns:
 
 -   What global variables (e.g., parameters characterizing the environment) or data structures (e.g., a gridded spatial environment) does the use of the RBB require?   
+
 The environment has to have x and y coordinates so that the location of an individual at the next step can be calculated based on the chosen turning angle and the particular move length. Although quite many CRW models were implemented in a gridded spatial environment, a grid is not a prerequisite for modelling movement as CRW, but the usage of continuous coordinates is also possible.   
 
--   Does the RBB directly affect global variables or data structures?   
+-   Does the RBB directly affect global variables or data structures? 
+
 Global variables are not modified by individuals’ movement, only the state variables (i.e. x and y coordinates) of the individual are affected.     
 
 -   Which parameters does the RBB use? Preferably a table including parameter name, meaning, default value, range, and unit (if applicable)    
+
 Move length is typically chosen from lognormal distribution, so that parameters defining this distribution are needed.    
 
 | name | meaning | units | typical ranges | 
@@ -89,7 +92,7 @@ Move length is typically chosen from lognormal distribution, so that parameters 
 | mu     | Mean of the lognormal distribution, from which the move length is drawn | meters | ($-\infty$, $\infty$)|
 | sd     | Standard deviation of the lognormal distribution, from which the move length is drawn | meters |  (0, $\infty$)|
 
-Turning angle are drawn from appropriate distributions. We present here two ways to model turning angles:
+Turning angles are drawn from appropriate distributions. We present here two ways to model turning angles:
 - implementation #1: chosen from uniform distribution    
 This is a rather simple and very often used implementation for choosing the turning angle. The angle is drawn from a uniform distribution within a specified range of possible headings (e.g. between -30 and +30 degrees).
 - implementation #2: drawn from a von Mises distribution   
@@ -109,10 +112,26 @@ __Parameters for turning angles according to implementation #2__
 
 ### Patterns and data to determine global variables & parameters and/or to claim that the model is realistic enough for its purpose
 
--  Which of the variables (or parameters) have an empirical meaning and can, in principle, be determined directly?
--  Which variables can be only determined via calibration?
--  Which data or patterns can be used for calibration?
+-  Which of the variables (or parameters) have an empirical meaning and can, in principle, be determined directly?   
+
+If following implementation #2, all parameters can be estimated by analysing the movement data collected on a sample of individuals of the studied species, e.g. by means of GPS, telemetry or ATLAS (Advanced Tracking and Localization of Animals in real-life Systems).      
+
+-  Which variables can be only determined via calibration?   
+
+If following implementation #2, all parameters can be parameterised using empirical data, there are no parameters that would specifically require calibration.  
+However, if implementation #1 is used, the range of the headings out of which to draw the turning angle, would have to be calibrated.    
+
+-  Which data or patterns can be used for calibration?   
+
+Spatial movement data can be used for calibration. These data can be collected in various ways, e.g. by using GPS, telemetry or ATLAS (Advanced Tracking and Localization of Animals in real-life Systems). A pattern that can be used to calibrate the range of headings for implementation #1, for example, is a spatial point pattern of the location of a sample of individuals at a time points separated by longer periods (compared to the time step of the model).     
+
 -  Which data sets already exist? (include durable references)
+
+Examples of data collected for modelling the animal movement as CRW:
+
+1. Schtickzelle, N., Joiris, A., van Dyck, H., & Baguette, M. (2007). Quantitative analysis of changes in movement behaviour within and outside habitat in a specialist butterfly. BMC Evolutionary Biology, 7. https://doi.org/4 10.1186/1471-2148-7-4
+2. Root, R. B., & Kareiva, P. M. (1984). The search for resources by cabbage butterflies (Pieris rapae): ecological consequences and adaptive significance of Markovian movements in a patchy environment. Ecology, 65(1), 147–165. https://doi.org/10.2307/1939467
+
 
 ### Interface
 
