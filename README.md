@@ -68,7 +68,7 @@ Different types of movements can be differentiated (Schlaegel et al. 2020) and C
 ## Documentation and Use
 
 ### Entity
- __now I am confused: this was already part of Tier 1, section 'Narrative documentation' (as part of Overview in the ODD). Do we really need to repeat it here?__
+<span style = "color:orange"> __now I am confused: this was already part of Tier 1, section 'Narrative documentation' (as part of Overview in the ODD). Do we really need to repeat it here?__</span>
  
 - What entity, or entities, are running the submodel? What state variables does the entity need to have to run this RBB?
 - Which variables describe the entities (normally derived from state variables) 
@@ -86,7 +86,7 @@ Move length is typically chosen from lognormal distribution, so that parameters 
 
 | name | meaning | units | typical ranges | 
 | -------- | -------- | -------- | -------- | 
-| mu     | Mean of the lognormal distribution, from which the move length is drawn | meters | (-$\infty$, $\infty$)|
+| mu     | Mean of the lognormal distribution, from which the move length is drawn | meters | ($-\infty$, $\infty$)|
 | sd     | Standard deviation of the lognormal distribution, from which the move length is drawn | meters |  (0, $\infty$)|
 
 Turning angle are drawn from appropriate distributions. We present here two ways to model turning angles:
@@ -98,13 +98,13 @@ A common but more sophisticated solution is the drawing of the turning angle fro
 __Parameters for turning angles according to implementation #1__
 | name | meaning | units | typical ranges | 
 | -------- | -------- | -------- | -------- | 
-| angle     | +/- values of turn | radians | [0, 2$\times$$\pi$] |
+| angle     | +/- values of turn | radians | [0, $2\times\pi$] |
 
 
 __Parameters for turning angles according to implementation #2__
 | name | meaning | units | typical ranges | 
 | -------- | -------- | -------- | -------- | 
-| m     | Mean of the von Mises distribution, from which the turning angle is drawn | radians |  [0, 2$\times$$\pi$] |
+| m     | Mean of the von Mises distribution, from which the turning angle is drawn | radians |  [0, $2\times\pi$] |
 | K     | Concentration parameter of the von Mises distribution, used for drawing the turning angles | unitless  | (0, $\infty$) |
 
 ### Patterns and data to determine global variables & parameters and/or to claim that the model is realistic enough for its purpose
