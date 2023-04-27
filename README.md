@@ -7,9 +7,9 @@ Correlated Random Walk (CRW) to describe agent’s (e.g. animals or humans) move
 
 ## 2. Authors names and affiliations
 
-Viktoriia Radchuk, Department of Ecological dynamics, Leibniz Institute for Zoo and Wildlife Research     
-Thibault Fronville, Department of Ecological dynamics, Leibniz Institute for Zoo and Wildlife Research        
-Uta Berger, Institute of Forest Growth and Computer Sciences, TU Dresden   
+Viktoriia Radchuk, _Department of Ecological dynamics, Leibniz Institute for Zoo and Wildlife Research_     
+Thibault Fronville, _Department of Ecological dynamics, Leibniz Institute for Zoo and Wildlife Research_        
+Uta Berger, _Institute of Forest Growth and Computer Sciences, TU Dresden_   
 
 ## 3. Keywords 
 
@@ -29,13 +29,13 @@ Different types of movement can be differentiated (Schlaegel et al. 2020) and CR
 
 ## 6. An overview of the RBB and its use 
 
-- Entity
+### - Entity
     - __What entity, or entities, are running the submodel or are involved (e.g., by providing information)? What state variables does the entity need to have to run this RBB?__
     The entities that call CRW are individual animals. Each individual possesses two state variables: move length and turning angle. These state variables are updated at each time step.
 
 
 - Context, model parameters & patterns: 
-    - __What global variables (e.g., parameters characterising the environment) or data structures (e.g., a gridded spatial environment) does the use of the RBB require?__  
+    - __What global variables (e.g., parameters characterising the environment) or data structures (e.g., a gridded spatial environment) does the use of the RBB require?__     
     The RBB requires the current x and y coordinates of the calling agent, and the values of the parameters describing the distributions from which the turning angle and the move length will be drawn.   
     - __Does the RBB directly affect global variables or data structures?__  
     No, RBB does not modify global variables, only the state variables (i.e. x and y coordinates) of the individual are affected.  
