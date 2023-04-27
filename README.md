@@ -30,45 +30,47 @@ Different types of movement can be differentiated (Schlaegel et al. 2020) and CR
 ## 6. An overview of the RBB and its use 
 
 ### - Entity
-    - __What entity, or entities, are running the submodel or are involved (e.g., by providing information)? What state variables does the entity need to have to run this RBB?__
+
+    - __What entity, or entities, are running the submodel or are involved (e.g., by providing information)? What state variables does the entity need to have to run this RBB?__   
     The entities that call CRW are individual animals. Each individual possesses two state variables: move length and turning angle. These state variables are updated at each time step.
 
 
-- Context, model parameters & patterns: 
+### - Context, model parameters & patterns: 
+
     - __What global variables (e.g., parameters characterising the environment) or data structures (e.g., a gridded spatial environment) does the use of the RBB require?__     
     The RBB requires the current x and y coordinates of the calling agent, and the values of the parameters describing the distributions from which the turning angle and the move length will be drawn.   
     - __Does the RBB directly affect global variables or data structures?__  
     No, RBB does not modify global variables, only the state variables (i.e. x and y coordinates) of the individual are affected.  
-    - __What parameters does the RBB use? Preferably a table including parameter name, meaning, default value, range, and unit (if applicable).__  
+    - __What parameters does the RBB use? Preferably a table including parameter name, meaning, default value, range, and unit (if applicable).__   
     Move length is typically chosen from lognormal distribution, so that parameters defining this distribution are needed.    
+    
+    | name | meaning | units | typical ranges | 
+    | -------- | -------- | -------- | -------- | 
+    | mu     | Mean of the lognormal distribution, from which the move length is drawn | meters | ($-\infty$, $\infty$)|
+    | sd     | Standard deviation of the lognormal distribution, from which the move length is drawn | meters |  (0, $\infty$)|
+    
+    Turning angles are drawn from appropriate distributions. We present here two ways to model turning angles:
+    - implementation #1: chosen from uniform distribution    
+    This is a rather simple and very often used implementation for choosing the turning angle. The angle is drawn from a uniform distribution within a specified range of possible headings (e.g. between -30 and +30 degrees).
+    - implementation #2: drawn from a von Mises distribution   
+    A common but more sophisticated solution is the drawing of the turning angle from one kind of a circular distribution, e.g., from a von Mises distribution, wrapped Cauchy distribution, or wrapped normal distribution (Codling et al. 2008). Our second implementation example uses a von Mises distribution. The description of this distribution also requires two parameters namely a mean (m) and a concentration (K).
+    
+    __Parameters for turning angles according to implementation #1__
+    | name | meaning | units | typical ranges | 
+    | -------- | -------- | -------- | -------- | 
+    | angle     | +/- values of turn | radians | [0, $2\times\pi$] |
+    
+    __Parameters for turning angles according to implementation #2__
+    | name | meaning | units | typical ranges | 
+    | -------- | -------- | -------- | -------- | 
+    | m     | Mean of the von Mises distribution, from which the turning angle is drawn | radians |  [0, $2\times\pi$] |
+    | K     | Concentration parameter of the von Mises distribution, used for drawing the turning angles | unitless  | (0, $\infty$) |
 
-| name | meaning | units | typical ranges | 
-| -------- | -------- | -------- | -------- | 
-| mu     | Mean of the lognormal distribution, from which the move length is drawn | meters | ($-\infty$, $\infty$)|
-| sd     | Standard deviation of the lognormal distribution, from which the move length is drawn | meters |  (0, $\infty$)|
 
-Turning angles are drawn from appropriate distributions. We present here two ways to model turning angles:
-- implementation #1: chosen from uniform distribution    
-This is a rather simple and very often used implementation for choosing the turning angle. The angle is drawn from a uniform distribution within a specified range of possible headings (e.g. between -30 and +30 degrees).
-- implementation #2: drawn from a von Mises distribution   
-A common but more sophisticated solution is the drawing of the turning angle from one kind of a circular distribution, e.g., from a von Mises distribution, wrapped Cauchy distribution, or wrapped normal distribution (Codling et al. 2008). Our second implementation example uses a von Mises distribution. The description of this distribution also requires two parameters namely a mean (m) and a concentration (K).
+### - Patterns and data to determine  parameters and/or to claim that the RBB is realistic enough for its purpose:
 
-__Parameters for turning angles according to implementation #1__
-| name | meaning | units | typical ranges | 
-| -------- | -------- | -------- | -------- | 
-| angle     | +/- values of turn | radians | [0, $2\times\pi$] |
-
-
-__Parameters for turning angles according to implementation #2__
-| name | meaning | units | typical ranges | 
-| -------- | -------- | -------- | -------- | 
-| m     | Mean of the von Mises distribution, from which the turning angle is drawn | radians |  [0, $2\times\pi$] |
-| K     | Concentration parameter of the von Mises distribution, used for drawing the turning angles | unitless  | (0, $\infty$) |
-
-
-- Patterns and data to determine  parameters and/or to claim that the RBB is realistic enough for its purpose:
-    - __Which of the variables (or parameters) can be set independent of the model/RBB, using direct measurement, other models (e.g. regression) , etc.?__
-    If following implementation #2, all parameters can be estimated by analysing the movement data collected on a sample of individuals of the studied species, e.g. by means of GPS, telemetry or ATLAS (Advanced Tracking and Localization of Animals in real-life Systems).  
+    - __Which of the variables (or parameters) can be set independent of the model/RBB, using direct measurement, other models (e.g. regression) , etc.?__   
+    If following implementation #2, all parameters can be estimated by analysing the movement data collected on a sample of individuals of the studied species, e.g. by means of GPS, telemetry or ATLAS (Advanced Tracking and Localization of Animals in real-life Systems).   
     If following implementation #1 the parameters describing the range from which the turning angles are to be drawn may be specified directly by the user, but that would not necessarily reflect movement ecology of the species in consideration.  
     
     - __Which variables or parameters can only be estimated within the context of the model or require calibration?__
