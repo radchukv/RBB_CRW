@@ -31,7 +31,7 @@ Different types of movement can be differentiated (Schlaegel et al. 2020) and CR
 
 - Entity
 
-    - <span style="color:grey">What entity, or entities, are running the submodel or are involved (e.g., by providing information)? What state variables does the entity need to have to run this RBB?</span>    
+    - __What entity, or entities, are running the submodel or are involved (e.g., by providing information)? What state variables does the entity need to have to run this RBB?__     
     The entities that call CRW are individual animals. Each individual possesses two state variables: move length and turning angle. These state variables are updated at each time step.
 
 
@@ -79,7 +79,7 @@ __Parameters for turning angles according to implementation #2__
     - __Which data or patterns can be used for calibration?__   
     Spatial movement data can be used for calibration. These data can be collected in various ways, e.g. by using GPS, telemetry or ATLAS (Advanced Tracking and Localization of Animals in real-life Systems). A pattern that can be used to calibrate the range of headings for implementation #1, for example, is a spatial point pattern of the location of a sample of individuals at a time points separated by longer periods (compared to the time step of the model).     
     
-    - __Are pre-existing datasets available to users already exist (references)?__
+    - <span style="color:grey">Are pre-existing datasets available to users already exist (references)?</span>
     CRW was already applied to several species previously and the data to derive the CRW parameters exist for a large number of species that were tracked by means of telemetry. Examples of data collected for modelling the animal movement as CRW:
 
 1. Schtickzelle, N., Joiris, A., van Dyck, H., & Baguette, M. (2007). Quantitative analysis of changes in movement behaviour within and outside habitat in a specialist butterfly. BMC Evolutionary Biology, 7. https://doi.org/4 10.1186/1471-2148-7-4
