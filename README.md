@@ -20,12 +20,11 @@ movement, animals, local movement, foraging
 
 The goal of CRW is to represent the movement of animal individuals, in two-dimensional space. When modeled as correlated random walk, the direction of movement at any time step is correlated with the direction of movement at the previous time step. 
 
-CRW was originally developed for describing the movement of insects (e.g. Kareiva & Schigesada 1983, Turchin 1998) and fitted to observational movement data. It has been shown that CRW describes well the movement behaviour not only of insects (e.g. Schtickzelle et al. 2007, Schultz and Crone 2001) but also other animals, e.g. sea stars (Lohmann et al. 2016), caribou (Bergmann et al. 2000), and grey seals (Austin et al. 2004). Accordingly, CRW is often used to represent animal movement in agent-based models (e.g. butterflies: Schultz and Crone 2005, Radchuk et al. 2013, wild boars: Scherer et al. 2020).
 
 ## 5. Concepts
 
-The key concept that CRW is based on is that of movement. Movement is defined as a change in the spatial location of an individual over time and is a key behavioural process that shapes ecological and evolutionary processes of nearly all animals (Nathan 2008). By affecting spatial position of individuals, movement shapes spatial patterns of individuals within populations and thereby affects metapopulation dynamics (Hanski 1998), species distribution (Hodgson et al. 2022) and, more generally, biodiversity dynamics (Jeltsch et al. 2013).   
-Different types of movement can be differentiated (Schlaegel et al. 2020) and CRW is useful for describing movement when focusing on local temporal and spatial scales.  
+The key concept that CRW is based on is that of movement. Movement is defined as a change in the spatial location of an individual over time and is a key behavioural process that shapes ecological and evolutionary processes of nearly all animals [^Nathan2008]. By affecting spatial position of individuals, movement shapes spatial patterns of individuals within populations and thereby affects metapopulation dynamics [^Hanski1994], species distribution [^Hodgson2022] and, more generally, biodiversity dynamics [^Jeltsch2013].     
+Different types of movement can be differentiated [^Schlaegel2020] and CRW is useful for describing movement when focusing on local temporal and spatial scales.  
 
 ## 6. An overview of the RBB and its use 
 
@@ -79,154 +78,341 @@ __Parameters for turning angles according to implementation #2__
     - __Which data or patterns can be used for calibration?__   
     Spatial movement data can be used for calibration. These data can be collected in various ways, e.g. by using GPS, telemetry or ATLAS (Advanced Tracking and Localization of Animals in real-life Systems). A pattern that can be used to calibrate the range of headings for implementation #1, for example, is a spatial point pattern of the location of a sample of individuals at a time points separated by longer periods (compared to the time step of the model).     
     
-    - <p style="color:grey">Are pre-existing datasets available to users already exist (references)?</p>
+    - __Are pre-existing datasets available to users already exist (references)?__
     CRW was already applied to several species previously and the data to derive the CRW parameters exist for a large number of species that were tracked by means of telemetry. Examples of data collected for modelling the animal movement as CRW:
-
-1. Schtickzelle, N., Joiris, A., van Dyck, H., & Baguette, M. (2007). Quantitative analysis of changes in movement behaviour within and outside habitat in a specialist butterfly. BMC Evolutionary Biology, 7. https://doi.org/4 10.1186/1471-2148-7-4
-2. Root, R. B., & Kareiva, P. M. (1984). The search for resources by cabbage butterflies (Pieris rapae): ecological consequences and adaptive significance of Markovian movements in a patchy environment. Ecology, 65(1), 147–165. https://doi.org/10.2307/1939467
+    
+    1. Schtickzelle, N., Joiris, A., van Dyck, H., & Baguette, M. (2007). Quantitative analysis of changes in movement behaviour within and outside habitat in a specialist butterfly. BMC Evolutionary Biology, 7. https://doi.org/4 10.1186/1471-2148-7-4
+    2. Root, R. B., & Kareiva, P. M. (1984). The search for resources by cabbage butterflies (Pieris rapae): ecological consequences and adaptive significance of Markovian movements in a patchy environment. Ecology, 65(1), 147–165. https://doi.org/10.2307/1939467
 
 
 - Interface - A list of all inputs and outputs of the RBB
 
-    - __Which input variables that  the RBB requires from an external, calling entity and in which units?__
-    
-    - __What specific outputs does it produce and how does this update the state variables of the calling entity?__
+    - __Which input variables that the RBB requires from an external, calling entity and in which units?__
+    If RBB were called by an external entity, then that entity should specify as inputs the parameters for distributions from which the move length and turning angle will be drawm.   
+    - __What specific outputs does it produce and how does this update the state variables of the calling entity?__   
+    The RBB produces the coordinates (x and y) of the next location to which the entity will be moving. These state variables of the calling entity are then accordingly updated.   
 
-_this has to be updated!_
-- Inputs: The RBB requires the current x and y coordinates of the calling entity, and the values of the parameters describing the distributions from which the turning angle and the move length will be drawn.
-- Outputs: The RBB produces the coordinates (x and y) of the next location to which the entity will be moving.
-
-
-## Narrative Documentation
-
-The entities that call CRW are individual animals.   
-Each individual possesses two state variables: move length and turning angle. These state variables are updated at each time step.   
-At each time step the RBB calculates the turning angle of the individual (that correlates with the previous heading of the individual) and its move length. The RBB then uses these values to update the location of the individual to the new one.   
-The processes in the model are scheduled as follows: first the turning angle is calculated using a specific distribution, and next the move length is calculated, so that the new x and y coordinates can be calculated, to which the individual moves.  
+- Scales
+Both the temporal and spatial scales are defined by the biology of the species in consideration and are best chosen based on the empirical movement data collected on a sample of individuals, e.g. by means of telemetry or GPS tracking. More generally CRW usually describes local movements of individuals as opposed to the movement types that occur at larger spatial scales, such as dispersal and migration.   
 
 
-## Reference Implementation and Use Cases
+## 7. Programm code
 
-This RBB includes an implementation of CRW in NetLogo version 6.2.2 run on MacOS Monterey 12.2.1
+### NetLogo Implementation
+NetLogo version 6.2.2 run on MacOS Ventura 13.3.1
+Attention, commenting in the below-block is done with '#', when copy-pasting to NetLogo replace with ';'
+
+``` NetLogo
+to move
+
+  if any? turtles
+    [
+      ask turtles
+        [
+            # assigning the x and y coordinate to the current ones
+            set xc xcor
+            set yc ycor
+            # updating the heading by adding the turning angle drawn from 
+            # either a equal distribution or from a von Mises distribution 
+            #(see procedures calc_turnangle_equal or calc_turnangle_circ
+            ifelse angle_distribution = uniform [set turnangle calc_turnangle_equal]
+                                              [set turnangle calc_turnangle_circ]
+           
+            set heading heading + turnangle
+            # drawing the move length
+            set moveleng exp (random-normal mu sd)
+            # setting the new coordinates with a given move length and turning angle
+            set xc xc + (moveleng * (sin heading))
+            set yc yc + (moveleng * (cos heading))
+            # moving to new coordinates
+            setxy xc yc
+           
+          ]
+      ]
+end
+
+to-report calc_turnangle_equal
+# turning angle - implementation #1: equal distribution
+ let turndegrees (random (angle + 1)) - (angle / 2)  
+ report turndegrees
+end
+
+to-report calc_turnangle_circ
+  # turning angle - implementation #2: circular distribution
+  # simulation algorithm for von Mises distribution (Fisher p. 49)
+  let a (1 + sqrt( 1 + 4 * K ^ 2))
+  let b (a - sqrt( 2 * a)) / ( 2 * K )
+  let r ( 1 + b ^ 2) / ( 2 * b )
+  let turnang 0
+  let step4 0
+  while [step4 = 0]
+    [
+      # step 1 of the algorithm
+      let U1 random-float 1
+      let z (cos ((pi * U1 ) * 180 / pi))  #  should be transformed into degrees for Netlogo cos acos etc
+      let f (1 + r * z) / ( r + z )
+      let c (K * (r - f))
+
+      # step 2 of the algorithm
+      let U2 random-float 1
+
+      ifelse
+        ( c * ( 2 - c) - U2) > 0
+        [
+          # in this case cond 2 is satisfied
+          let U3 random-float 1
+          if ( U3 - 0.5 ) < 0
+          [
+            set turnang ((- acos (f) * pi / 180) + m)
+          ]
+          if ( U3 - 0.5) > 0
+          [
+            set turnang (acos (f) * pi / 180 ) + m
+          ]
+          if is-number? turnang [ set step4 1]
+        ] 
+        # otherwise, if cond 2 is not satisfied
+        [
+          if  ((ln ( c / U2 )) + 1 - c)  >= 0
+          [
+            let U3 random-float 1
+            if ( U3 - 0.5 ) < 0
+                [
+                  set turnang ((- acos (f)  * pi / 180) + m)
+                ]
+            if ( U3 - 0.5) > 0
+                [
+                  set turnang (acos (f) * pi / 180) + m
+                ]
+            if is-number? turnang [set step4 1]
+          ]
+        ]
+    ]
+
+  # transforming the turnang to keep within the +-2*pi
+  if turnang < 0 [set turnang turnang + 2 * pi]
+  if turnang > ( 2 * pi) [set turnang turnang - 2 * pi]
+  # transforming the turning angle into degrees
+  let turndegrees turnang * (180 / pi)
+  report turndegrees
+end
+```
+
+### Python Implementation
+
+Python version 3.10 run on Pycharm 2021.2.3
+Modules needed to run this code are pygame, numpy and matplotlib
+``` Python
+# required modules
+import pygame
+import numpy as np
+import matplotlib.pyplot as plt
+
+# define von Mises parameter : κ (kappa) 
+vonmises_dispersion = 10
+
+# define a object-oriented class 
+class Corr_Random_Walker:
+    def __init__(self, x, y):
+
+        self.position = pygame.Vector2(x,y)
+        # define a vector with a euclidean distance of 1 in a random direction
+        vec = np.array([1 * np.cos(np.random.randint(0, 360, 1)), 1 * np.sin(np.random.randint(0, 360, 1))])
+        # velocity is defined as a vector for the next movement
+        self.velocity = pygame.Vector2(*vec)
+        self.random_von_mises_value = float(np.degrees(np.random.vonmises(0, vonmises_dispersion, 1)))
+
+    def define_new_velocity(self):
+        
+        # defines random angle withtin the von Mises distribution bounderies
+        self.random_von_mises_value = float(np.degrees(np.random.vonmises(0, vonmises_dispersion, 1)))
+        self.velocity = self.velocity.rotate(self.random_von_mises_value)
+
+    def move(self):
+        # adding the velocity to the current position results in a displacement
+        self.position += self.velocity
 
 
-## Relationship to other RBBs
+Agents = Corr_Random_Walker( x= 0, y = 0)
 
-Durable references (i.e., permanent identifiers or URLs) to other related RBBs.
+X_Coordinates = []
+Y_Coordinates = []
+for i in range(1000):
+    Agents.define_new_velocity()
+    Agents.move()
+    X_Coordinates.append(Agents.position.x)
+    Y_Coordinates.append(Agents.position.y)
 
+plt.plot(X_Coordinates, Y_Coordinates)
+plt.legend()
+plt.show()
+```
+### Javascript Implementation
 
-## General Metadata
+JavaScript on Visual studio code version 1.66
+The JavaScript library p5.js is necessary to run this code
+``` Javascript
+// "von Mises" Implementation following instructions from DOI: https://doi.org/10.1017/CBO9780511564345.005
 
-- authors: Viktoriia Radchuk, Thibault Fronville, Uta Berger
-- version:  v 1.0.0 _Okay?_
-- license
-- programming language and version: NetLogo version 6.2.2
-- software, system, and data dependencies: 
-- repository URL (NOTE: needs clarification, is this the _development_ repository like the URL of this GitHub repository, or a TRUSTed digital repository for
-  archival, like https://doi.org/10.5281/zenodo.7241586?)
-- peer reviewed (yes/no): __Don't know what to fill in, reviewed by whom?__
-- date published: 
-- date last update: 
-
-## Software Citation and FAIR4RS Principles
-
-Viktoriia Radchuk, Thibault Fronville, Uta Berger (202X) ‘Correlated random walk (CRW) to model individual movement in homogeneous landscapes’   
-__to be updated__
-
-Create a citation for this RBB according to the 
-[Software Citation Principles](https://force11.org/info/software-citation-principles-published-2016/). 
-
+function  random_von_Mises(mu, kappa){
+  if (typeof mu !== "number") {
+      return console.log("mu must be number");
+  }
   
+  if (typeof kappa !== "number") {
+      return console.log("kappa must be number");
+  }
+  
+  if (kappa < 0) {
+      return console.log("kappa must be positive"); 
+  }
+  
+  if (kappa == 0) {
+      return rad_angle = 2.0*Math.PI * (Math.random() -0.5);  
+      // number between -pi and +pi
+  }
 
-## Documentation and Use
+  a = 1.0 + Math.sqrt(1.0 + 4.0*(kappa ** 2));
+  b = (a - Math.sqrt(2.0 * a)) / (2.0 * kappa);
+  r = (1.0 + b ** 2) / (2.0 * b);
 
-### Entity
-<span style = "color:orange"> __now I am confused: this was already part of Tier 1, section 'Narrative documentation' (as part of Overview in the ODD). Do we really need to repeat it here?__</span>
- 
-- What entity, or entities, are running the submodel? What state variables does the entity need to have to run this RBB?
-- Which variables describe the entities (normally derived from state variables) 
+  n = 0;
+  rad_angle = 0;
+  
+  while (n == 0) {
 
-### Context, model parameters & patterns:
+      U1 = Math.random();
+      U2 = Math.random();
+      U3 = Math.random();
 
--   What global variables (e.g., parameters characterizing the environment) or data structures (e.g., a gridded spatial environment) does the use of the RBB require?   
-
-The environment has to have x and y coordinates so that the location of an individual at the next step can be calculated based on the chosen turning angle and the particular move length. Although quite many CRW models were implemented in a gridded spatial environment, a grid is not a prerequisite for modelling movement as CRW, but the usage of continuous coordinates is also possible.   
-
--   Does the RBB directly affect global variables or data structures? 
-
-Global variables are not modified by individuals’ movement, only the state variables (i.e. x and y coordinates) of the individual are affected.     
-
--   Which parameters does the RBB use? Preferably a table including parameter name, meaning, default value, range, and unit (if applicable)    
-
-
-### Patterns and data to determine global variables & parameters and/or to claim that the model is realistic enough for its purpose
-
--  Which of the variables (or parameters) have an empirical meaning and can, in principle, be determined directly?   
-
-If following implementation #2, all parameters can be estimated by analysing the movement data collected on a sample of individuals of the studied species, e.g. by means of GPS, telemetry or ATLAS (Advanced Tracking and Localization of Animals in real-life Systems).      
-
--  Which variables can be only determined via calibration?   
-
-If following implementation #2, all parameters can be parameterised using empirical data, there are no parameters that would specifically require calibration.  
-However, if implementation #1 is used, the range of the headings out of which to draw the turning angle would have to be calibrated.    
-
--  Which data or patterns can be used for calibration?   
-
-Spatial movement data can be used for calibration. These data can be collected in various ways, e.g. by using GPS, telemetry or ATLAS (Advanced Tracking and Localization of Animals in real-life Systems). A pattern that can be used to calibrate the range of headings for implementation #1, for example, is a spatial point pattern of the location of a sample of individuals at a time points separated by longer periods (compared to the time step of the model).     
-
--  Which data sets already exist? (include durable references)
-
-Examples of data collected for modelling the animal movement as CRW:
-
-1. Schtickzelle, N., Joiris, A., van Dyck, H., & Baguette, M. (2007). Quantitative analysis of changes in movement behaviour within and outside habitat in a specialist butterfly. BMC Evolutionary Biology, 7. https://doi.org/4 10.1186/1471-2148-7-4
-2. Root, R. B., & Kareiva, P. M. (1984). The search for resources by cabbage butterflies (Pieris rapae): ecological consequences and adaptive significance of Markovian movements in a patchy environment. Ecology, 65(1), 147–165. https://doi.org/10.2307/1939467
+      z = Math.cos(Math.PI * U1);
+      f = (1.0 + r * z) / (r + z);
+      c = kappa * (r - f);
 
 
-### Interface
+      if (((c * (2.0 - c) - U2) > 0.0) || ((Math.log(c / U2) + 1.0 - c) > 0.0)){
+          rad_angle = (Math.sign(U3 - 0.5) * Math.acos(f) + mu) % (2 * Math.PI)
+          n += 1;
+          
+      }
+          
+      
+    }
+  return rad_angle;
+}
 
-- What specific inputs does the RBB require from an external, calling entity and in what units (e.g., [CSDMS Standard Names](https://csdms.colorado.edu/wiki/CSN_Examples) and [UDUnits](https://www.unidata.ucar.edu/software/udunits/))?
-- What specific outputs does it produce and how does this update the state variables of the calling entity?
 
-### Scales
-- On which spatio-temporal scales does the RBB work, i.e. what are the resolution and extent of the spatial and temporal scale?
+// CRW Model ---------------------------------------------------------------
 
-### Details
+// init variables
 
-How, in detail, does the RBB work? This should be written description that
-describes the code implementing the RBB and can include equations and
-pseudo-code which is particularly important if the RBB involves several
-processes.
+var mu_var = 0;
+var kappa_var = 15;
+var init_pos_x = 2000/2;
+var init_pos_y = 2000/2;
+var step = 0;
 
-- include a flowchart if appropriate
 
-### Source Code
+// class CRW
 
-Provided in a format that is readable by compilers/development environments,
-well commented, written for which programming language, operation system,
-version etc., if possible, provided for different programming languages
+class CRW {
+  constructor(x,y){
+    this.position = createVector(x,y);
+    this.velocity = p5.Vector.random2D();
+    this.von_mises = random_von_Mises(mu_var, kappa_var);
+  }
 
-## Example implementation
+  define_velocity(){
+    this.von_mises = random_von_Mises(mu_var, kappa_var);
+    this.velocity.rotate(this.von_mises);
+  }
 
-An executable deployment that includes a simplified environment in which the RBB can be run.
+  move() {
+    this.position.add(this.velocity);
+  }
 
-## Example analyses of a simulation output, benchmark, or test cases
+  show(){
+    strokeWeight(10);
+    stroke(255, 0, 0);
+    point(this.position.x, this.position.y);
 
-Results obtained with the example implementation providing insights into how,
-under different settings, the RBB performs, including extreme scenarios.
+  }
+}
 
-## Use history
+//  draw
 
-What is the history of the RBB? Is it entirely new or based on earlier
-submodels, or an implementation of an existing submodel? 
+const Agent = []
 
-Has the RBB, or its predecessors, been used in literature?
+function setup() {
+  createCanvas(2000, 2000);
+  for (let i = 0; i<2; i++){
+  Agent.push(new CRW(init_pos_x, init_pos_y));
+  }
+}
 
-Include a reference list of publications where the RBB was successfully used.
+function draw() {
+  background(51);
+  for (let individual of Agent) {
+    individual.define_velocity();
+    individual.move();
+    individual.show();
+    
+  }
+}
 
-## User's guide | manual | tutorial
+```
 
-For more complex RBBs, a detailed user's guide or manual and a tutorial walk through can be very helpful to onboard new users.
+## 8.	Example analyses of a simulation output
+__TO ADD__
 
-## References
+## 9. Version control  
 
-As needed.
+- Published date
+XX.XX.2023 __UPDATE!!!__
+- Last updated  
+27.04.2023
+
+
+## 10. Status Info
+
+- Peer Review   
+The RBB implementations have not been peer-reviewed.
+- License   
+
+## 11. Citation of the RBB
+Viktoriia Radchuk, Thibault Fronville, Uta Berger (202X) ‘Reusable Building Block for Correlated Random Walk (CRW) to model agent's movement in homogeneous landscapes’   
+
+
+## 12.	Example implementation of the RBB 
+
+An example of implementation of the CRW in NetLogo can be found at:  __INSERT yet__
+The implementation in python: https://www.comses.net/codebases/a33c5f0a-a903-45e0-ae72-cb7abbce2f9f/releases/1.1.0/
+The implementation in Java:   __INSERT yet__
+
+## 13. Use history
+
+CRW was originally developed for describing the movement of insects (e.g. [^Kareiva&Schigesada1983], [^Turchin1998]) and fitted to observational movement data. It has been shown that CRW describes well the movement behaviour not only of insects (e.g. [^Schtickzelle2007], [^Schultz&Crone2001]) but also other animals, e.g. sea stars [^Lohmann2016], caribou [^Bergman2000], and grey seals [^Austin2004]. Accordingly, CRW is often used to represent animal movement in agent-based models (e.g. butterflies: [^Schultz&Crone2001], [^Radchuk2013], wild boars: [^Scherer2020]).
+Generally, CRW is one type of the diffusion models.
+
+
+## 14. References
+[^Nathan2008]: Nathan R, Getz WM, Revilla E, Holyoak M, Kadmon R, Saltz D, Smouse PE. (2008). A movement ecology paradigm for unifying organismal movement research. _Proceedings of the National Academy of Sciences of the United States of America_ 105 (49): 19052–19059. DOI: 10.1073/pnas.0800375105.
+[^Hanski1994]: Hanski I. (1994). A practical model of metapopulation dynamics. _Journal of Animal Ecology_ 63: 151-162. 
+[^Hodgson2022]: Hodgson JA, Randall Z, Shortall CR, Oliver TH (2022). Where and why are species' range shifts hampered by unsuitable landscapes? _Global Change Biology_ 28:4765–4774. DOI: 10.1111/gcb.16220.  
+[^Jeltsch2013]: Jeltsch F, Bonte D, Pe'er G, Reineking B, Leimgruber P, Balkenhol N, Schroeder B. et al. (2013). Integrating movement ecology with biodiversity research - exploring new avenues to address spatiotemporal biodiversity dynamics. _Movement ecology_ 1 (6): 1-13. DOI: 10.1186/2051-3933-1-6.  
+[^Schlaegel2020]: Schlägel UE, Grimm V, Blaum N, Colangeli P, Dammhahn M, Eccard JA, Hausmann SL et al. (2020). Movement-mediated community assembly and coexistence. _Biological Reviews_ 95: 1073–1096. DOI: 10.1111/brv.12600.  
+[^Kareiva&Schigesada1983]: Kareiva P & Schigesada N. (1983). Analyzing Insect Movement as a Correlated Random Walk. _Oecologia_ 56: 234-238.  
+[^Turchin1998]: Turchin P. (1998) Quantitative Analysis of Movement. Measuring and modeling population redistribution in animals and plants. p. 396. Beresta Books, USA.  
+[^Schtickzelle2007]: Schtickzelle N, Joiris A, Van Dyck H, Baguette M. (2007). Quantitative analysis of changes in movement behaviour within and outside habitat in a specialist butterfly. _BMC Evolutionary Biology_ 7(4): 1-15. DOI: 10.1186/1471-2148-7-4.  
+[^Schultz&Crone2001]: Schultz CB & Crone EE. (2001). Edge-mediated dispersal behavior in a prairie butterfly. _Ecology_ 82: 1879-1892.  
+[^Lohmann2016]: Lohmann AC, Evangelista D, Waldrop LD, Mah CL, Hedrick TL (2016). Covering ground: A Look at movement patterns and random walk behavior in Aquilonastra sea stars. _Biological Bulletin_ 231(2): 130-141. DOI: https://doi.org/10.1086/690093. 
+[^Bergman2000]: Bergman CM, Schaefer JA, Luttich SN. (2000) Caribou Movement as a Correlated Random Walk. _Oecologia_ 123(3): 364-374. 
+[^Austin2004]: Austin D, Bowen WD, McMillan JI. (2004). Intraspecific variation in movement patterns: modeling individual behaviour in a large marine predator. _Oikos_ 105: 15-30. 
+[^Radchuk2013]: Radchuk V, Johst K, Groeneveld J, Grimm V, Schtickzelle N. (2013). Behind the scenes of population viability modeling: Predictingbutterfly metapopulation dynamics under climate change. _Ecological Modelling_ 259: 62-73.  
+[^Scherer2020]: Scherer C,. Radchuk V, Franz M, Thulke H-H, Lange M, Grimm V, Kramer-Schadt S. (2020). Moving infections: individual movement decisions drive disease persistence in spatially structured landscapes. _Oikos_ 129(5):651-667. DOI: https://doi.org/10.1111/oik.07002. 
+
+
+
+
+
+
