@@ -30,6 +30,7 @@ Different types of movement can be differentiated (Schlaegel et al. 2020) and CR
 ## 6. An overview of the RBB and its use 
 
 - Entity
+
     - <span style="color:grey;">__What entity, or entities, are running the submodel or are involved (e.g., by providing information)? What state variables does the entity need to have to run this RBB?__</span>    
     The entities that call CRW are individual animals. Each individual possesses two state variables: move length and turning angle. These state variables are updated at each time step.
 
