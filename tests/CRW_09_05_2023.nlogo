@@ -26,7 +26,7 @@ to setup
   ]
 
   set m -0.02
-  set K 6
+  set K 7
   set mu 0.3
   set sd 0.05
  ; set angle_distribution "nonuniform"
