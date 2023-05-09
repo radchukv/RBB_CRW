@@ -95,8 +95,10 @@ __Parameters for turning angles according to implementation #2__
 - Scales
 Both the temporal and spatial scales are defined by the biology of the species in consideration and are best chosen based on the empirical movement data collected on a sample of individuals, e.g. by means of telemetry or GPS tracking. More generally CRW usually describes local movements of individuals as opposed to the movement types that occur at larger spatial scales, such as dispersal and migration.   
 
+## 7. Pseudocode, a Flowchart or other type of graphical representation
+We do not provide a pseudocode as we consider this building block being simple enough to be replicated following the verbal description and the codes we provide in NetLogo, Python and Java
 
-## 7. Programm code
+## 8. Programm code
 
 ### NetLogo Implementation
 NetLogo version 6.2.2 run on MacOS Ventura 13.3.1
@@ -362,7 +364,7 @@ function draw() {
 
 ```
 
-## 8.	Example analyses of a simulation output
+## 9.	Example analyses of a simulation output, test cases and benchmarks
 One prominent test that is usually performed to assess the appropriateness of the CRW model for the empirically collected movement data is based on the net squared displacement [^Turchin1998]. Generally, the net squared displacement grows linearly with the number of moves, and this fact can be used to assess whether the data can be described with CRW. Specifically, one plots the expected net squared displacement (calculated using known formulas, see p. 139 in [^Turchin1998]) vs the number of moves and compares the expected net squared displacement to the one observed from the data for each number of moves. This test can be performed not only with the empirically collected data but also with the simulated data.    
 
 We here confronted the expected net squared displacement (calculated using the formula 5.2 in [^Turchin1998] because the turning angles were approximately symmetrically distributed) with the observed ones for both implementations of CRW: 1) the one based on drawing the turning angles from the uniform distribution (drawn with same likelihood from the range between +5 and -5 degrees), and 2) the other one based on von Mises distribution (with `m` = -0.02 and `K` = 7). Move lengths were drawn from lognormal distribution with the `mu`= 0.3 and sd = 0.05. We run the model with 10 individuals (i.e. producing 10 paths) for 50 time steps.     
@@ -380,34 +382,34 @@ We here confronted the expected net squared displacement (calculated using the f
 Both parameterisations (Fig. 1 and Fig.2) produce observed net squared displacements that are slighly smaller than those expected under CRW (see figure below). This means that the individuals are not moving as far as would be expected under CRW. The reason for this may be the specific chosen parameterisation. However, we point out that we only inspect the results visually and do not test for the significance of the difference between observed and expected net squared displacements. That can be peformed using bootstrap, for example, as suggested by [^Turchin1998], p. 140-141. 
 
 
-## 9. Version control  
+## 10. Version control  
 
 - Published date: 9.05.2023
 - Last updated: 9.05.2023   
 
 
-## 10. Status Info
+## 11. Status Info
 
 - Peer Review: The RBB implementations have not been peer-reviewed.
 - License: GPL-3.0.   
 
-## 11. Citation of the RBB
+## 12. Citation of the RBB
 Viktoriia Radchuk, Thibault Fronville, Uta Berger (2023) ‘Reusable Building Block for Correlated Random Walk (CRW) to model agent's movement in homogeneous landscapes’   
 
 
-## 12.	Example implementation of the RBB 
+## 13.	Example implementation of the RBB 
 
 An example of implementation of the CRW in NetLogo can be found at:  https://www.comses.net/codebases/ea80d735-a536-4616-9df8-6a05a167ec24/releases/1.0.0/   
 The implementation in python: https://www.comses.net/codebases/a33c5f0a-a903-45e0-ae72-cb7abbce2f9f/releases/1.1.0/   
 The implementation in Java:   __INSERT yet__    
 
-## 13. Use history
+## 14. Use history
 
 CRW was originally developed for describing the movement of insects (e.g. [^Kareiva&Schigesada1983], [^Turchin1998]) and fitted to observational movement data. It has been shown that CRW describes well the movement behaviour not only of insects (e.g. [^Schtickzelle2007], [^Schultz&Crone2001]) but also other animals, e.g. sea stars [^Lohmann2016], caribou [^Bergman2000], and grey seals [^Austin2004]. Accordingly, CRW is often used to represent animal movement in agent-based models (e.g. butterflies: [^Schultz&Crone2001], [^Radchuk2013], wild boars: [^Scherer2020]).
 Generally, CRW is one type of the diffusion models.
 
 
-## 14. References
+## 15. References
 [^Nathan2008]: Nathan R, Getz WM, Revilla E, Holyoak M, Kadmon R, Saltz D, Smouse PE. (2008). A movement ecology paradigm for unifying organismal movement research. _Proceedings of the National Academy of Sciences of the United States of America_ 105 (49): 19052–19059. DOI: 10.1073/pnas.0800375105.
 [^Hanski1994]: Hanski I. (1994). A practical model of metapopulation dynamics. _Journal of Animal Ecology_ 63: 151-162. 
 [^Hodgson2022]: Hodgson JA, Randall Z, Shortall CR, Oliver TH (2022). Where and why are species' range shifts hampered by unsuitable landscapes? _Global Change Biology_ 28:4765–4774. DOI: 10.1111/gcb.16220.  
