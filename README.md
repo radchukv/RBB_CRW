@@ -363,31 +363,45 @@ function draw() {
 ```
 
 ## 8.	Example analyses of a simulation output
-__TO ADD__
+One prominent test that is usually performed to assess the appropriateness of the CRW model for the empirically collected movement data is based on the net squared displacement [^Turchin1998]. Generally, the net squared displacement grows linearly with the number of moves, and this fact can be used to assess whether the data can be described with CRW. Specifically, one plots the expected net squared displacement (calculated using known formulas, see p. 139 in [^Turchin1998]) vs the number of moves and compares the expected net squared displacement to the one observed from the data for each number of moves. This test can be performed not only with the empirically collected data but also with the simulated data.    
+
+We here confronted the expected net squared displacement (calculated using the formula 5.2 in [^Turchin1998] because the turning angles were approximately symmetrically distributed) with the observed ones for both implementations of CRW: 1) the one based on drawing the turning angles from the uniform distribution (drawn with same likelihood from the range between +5 and -5 degrees), and 2) the other one based on von Mises distribution (with `m` = -0.02 and `K` = 6). Move lengths were drawn from lognormal distribution with the `mu`= 0.3 and sd = 0.05. We run the model with 10 individuals (i.e. producing 10 paths) for 50 time steps.     
+
+<p style="text-align:center;">
+<img src="figs/UnifImplement_Comparison_obs_exp_NetSqDispl.png" height = "480"/>
+</p>
+<p style = "font-size: 80%;text-align:center;">Figure 1. Comparison of expected and observed net squared displacement using the CRW implementation based on the uniform distribution of turning angles</p>
+
+<p style="text-align:center;">
+<img src="figs/vonMisesImplement_Comparison_obs_exp_NetSqDispl.png" height = "480"/>
+</p>
+<p style = "font-size: 80%; text-align:center;">Figure 2. Comparison of expected and observed net squared displacement using the CRW implementation based on drawing the turning angles from von Mises distribution</p>
+
+Both parameterisations (Fig. 1 and Fig.2) produce observed net squared displacements that are slighly smaller than those expected under CRW (see figure below). This means that the individuals are not moving as far as would be expected under CRW. The reason for this may be the specific chosen parameterisation. However, we point out that we only inspect the results visually and do not test for the significance of the difference between observed and expected net squared displacements. That can be peformed using bootstrap, for example, as suggested by [^Turchin1998], p. 140-141. 
+
 
 ## 9. Version control  
 
 - Published date
-XX.XX.2023 __UPDATE!!!__
+9.05.2023
 - Last updated  
-27.04.2023
+9.05.2023
 
 
 ## 10. Status Info
 
-- Peer Review   
-The RBB implementations have not been peer-reviewed.
-- License   
+- Peer Review: The RBB implementations have not been peer-reviewed.
+- License: GPL-3.0.   
 
 ## 11. Citation of the RBB
-Viktoriia Radchuk, Thibault Fronville, Uta Berger (202X) ‘Reusable Building Block for Correlated Random Walk (CRW) to model agent's movement in homogeneous landscapes’   
+Viktoriia Radchuk, Thibault Fronville, Uta Berger (2023) ‘Reusable Building Block for Correlated Random Walk (CRW) to model agent's movement in homogeneous landscapes’   
 
 
 ## 12.	Example implementation of the RBB 
 
-An example of implementation of the CRW in NetLogo can be found at:  __INSERT yet__
-The implementation in python: https://www.comses.net/codebases/a33c5f0a-a903-45e0-ae72-cb7abbce2f9f/releases/1.1.0/
-The implementation in Java:   __INSERT yet__
+An example of implementation of the CRW in NetLogo can be found at:  https://www.comses.net/codebases/ea80d735-a536-4616-9df8-6a05a167ec24/releases/1.0.0/   
+The implementation in python: https://www.comses.net/codebases/a33c5f0a-a903-45e0-ae72-cb7abbce2f9f/releases/1.1.0/   
+The implementation in Java:   __INSERT yet__    
 
 ## 13. Use history
 
