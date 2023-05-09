@@ -382,10 +382,8 @@ Both parameterisations (Fig. 1 and Fig.2) produce observed net squared displacem
 
 ## 9. Version control  
 
-- Published date
-9.05.2023
-- Last updated  
-9.05.2023
+- Published date: 9.05.2023
+- Last updated: 9.05.2023   
 
 
 ## 10. Status Info
