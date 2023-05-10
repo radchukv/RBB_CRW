@@ -1,5 +1,6 @@
 ## analysing the CRW data to see
 # whether CRW model is appropriate, by using net squared displacement
+# an implementation #1, based on uniform distribution to draw the turning angles
 
 library(tidyverse)
 library(magrittr)
@@ -42,7 +43,7 @@ dat_acf <- dat_acf %>%
            abs(acf) < CI ~ 'Nonsign'
          ))
 table(dat_acf$Sign)
-dat_acf[dat_acf$Sign == 'Sign',]  ## inspecting
+dat_acf[dat_acf$Sign == 'Sign',]
 
 ## 3. continue with preparing the data to have comparison of hte observed and expected squared net duisplacement
 ## add the first x and y to calc the observed net squared displacement at each step
@@ -69,7 +70,6 @@ obs_R2_aver <- dat_merge %>%
 ## here is a question: do I summarize per path or ACROSS paths?
 sum_parms <- dat_parms %>%
   group_by(id) %>%
-  # filter(Nmove <= 30) %>%   ## seeing whether using less steps avoids the mismatch
   summarize(Mean_mlength = mean(movelength),  ## m1 in Turchin's book p 139
             mean_ml2 = mean(movel_2),          ## m2 in Turchn's book p 139
             mean_cos = mean(cosRad),           ## psi in Turchin's book p 139
@@ -79,7 +79,6 @@ sum_parms <- dat_parms %>%
 
 sum_parms_acrossPaths <- dat_parms %>%
   ungroup(id) %>%
-  # filter(Nmove <= 30) %>%   ## seeing whether using less steps avoids the mismatch
   summarize(Mean_mlength = mean(movelength),  ## m1 in Turchin's book p 139
             mean_ml2 = mean(movel_2),          ## m2 in Turchn's book p 139
             mean_cos = mean(cosRad),           ## psi in Turchin's book p 139
@@ -119,8 +118,3 @@ ggplot(dat_Net2exp, aes(x = Nmove, y= N2)) +
   geom_point(data = subset(dat_merge, id == 8), aes(x = Nmove, y = Obs_R2),
              col= 'red')
 
-
-#
-# check_logn <- rlnorm(500, meanlog = 2.27, sdlog = 0.574002)
-# hist(check_logn)
-# hist(dat_vonM_merge$movelength, add = T, col = "#E690CB7D")

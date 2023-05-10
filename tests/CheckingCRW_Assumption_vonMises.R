@@ -1,5 +1,6 @@
 ## analysing the CRW data to see
 # whether CRW model is appropriate, by using net squared displacement
+# an implementation #2, using von Mises distribution
 
 library(tidyverse)
 library(magrittr)
@@ -69,7 +70,6 @@ obs_R2_aver <- dat_merge %>%
 ## here is a question: do I summarize per path or ACROSS paths?
 sum_parms <- dat_parms %>%
   group_by(id) %>%
-  # filter(Nmove <= 30) %>%   ## seeing whether using less steps avoids the mismatch
   summarize(Mean_mlength = mean(movelength),  ## m1 in Turchin's book p 139
             mean_ml2 = mean(movel_2),          ## m2 in Turchn's book p 139
             mean_cos = mean(cosRad),           ## psi in Turchin's book p 139
@@ -78,7 +78,6 @@ sum_parms <- dat_parms %>%
 
 sum_parms_acrossPaths <- dat_parms %>%
   ungroup(id) %>%
-  # filter(Nmove <= 30) %>%   ## seeing whether using less steps avoids the mismatch
   summarize(Mean_mlength = mean(movelength),  ## m1 in Turchin's book p 139
             mean_ml2 = mean(movel_2),          ## m2 in Turchn's book p 139
             mean_cos = mean(cosRad),           ## psi in Turchin's book p 139
