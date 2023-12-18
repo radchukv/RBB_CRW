@@ -399,7 +399,7 @@ Viktoriia Radchuk, Thibault Fronville, Uta Berger (2023) ‘Reusable Building Bl
 
 ## 13.	Example implementation of the RBB 
 
-An example of implementation of the CRW in NetLogo can be found at: https://www.comses.net/codebases/ea80d735-a536-4616-9df8-6a05a167ec24/releases/1.0.0/ 
+An example of implementation of the CRW in NetLogo can be found at: https://www.comses.net/codebases/ea80d735-a536-4616-9df8-6a05a167ec24/releases/1.0.0/  
 The implementation in python: https://www.comses.net/codebases/a33c5f0a-a903-45e0-ae72-cb7abbce2f9f/releases/1.1.0/   
 The implementation in Java:   https://www.comses.net/codebases/624ce046-b206-4b54-8a4a-2738cd62b0c6/releases/1.0.0/  
 
