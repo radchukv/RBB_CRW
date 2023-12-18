@@ -98,7 +98,7 @@ Both the temporal and spatial scales are defined by the biology of the species i
 ## 7. Pseudocode, a Flowchart or other type of graphical representation
 We do not provide a pseudocode as we consider this building block being simple enough to be replicated following the verbal description and the codes we provide in NetLogo, Python and Java
 
-## 8. Programm code
+## 8. Programme code
 
 ### NetLogo Implementation
 NetLogo version 6.2.2 run on MacOS Ventura 13.3.1
@@ -385,12 +385,12 @@ Both parameterisations (Fig. 1 and Fig.2) produce observed net squared displacem
 ## 10. Version control  
 
 - Published date: 9.05.2023
-- Last updated: 9.05.2023   
+- Last updated: 18.12.2023   
 
 
 ## 11. Status Info
 
-- Peer Review: The RBB implementations have not been peer-reviewed.
+- Peer Review: The RBB implementation in NetLogo has been peer-reviewed, the RBB implementations in python and Java have not been peer-reviewed.
 - License: GPL-3.0.   
 
 ## 12. Citation of the RBB
@@ -399,7 +399,7 @@ Viktoriia Radchuk, Thibault Fronville, Uta Berger (2023) ‘Reusable Building Bl
 
 ## 13.	Example implementation of the RBB 
 
-An example of implementation of the CRW in NetLogo can be found at:  __WILL STILL BE UPDATED, model under peer review on CoMSES currently__
+An example of implementation of the CRW in NetLogo can be found at: https://www.comses.net/codebases/ea80d735-a536-4616-9df8-6a05a167ec24/releases/1.0.0/ 
 The implementation in python: https://www.comses.net/codebases/a33c5f0a-a903-45e0-ae72-cb7abbce2f9f/releases/1.1.0/   
 The implementation in Java:   https://www.comses.net/codebases/624ce046-b206-4b54-8a4a-2738cd62b0c6/releases/1.0.0/  
 
